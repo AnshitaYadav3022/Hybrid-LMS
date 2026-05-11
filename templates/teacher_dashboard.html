@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8fafc;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+        width:270px;
+        height:100vh;
+        position:fixed;
+        background:#111827;
+        padding:30px 20px;
+        color:white;
+    }
+
+    .logo{
+        font-size:30px;
+        font-weight:800;
+        color:#8b5cf6;
+        margin-bottom:50px;
+    }
+
+    .menu a{
+        display:block;
+        color:#d1d5db;
+        text-decoration:none;
+        padding:14px 18px;
+        border-radius:14px;
+        margin-bottom:12px;
+        transition:0.3s;
+        font-weight:500;
+    }
+
+    .menu a:hover{
+        background:#8b5cf6;
+        color:white;
+    }
+
+    /* MAIN */
+
+    .main-content{
+        margin-left:270px;
+        padding:40px;
+    }
+
+    .topbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:40px;
+    }
+
+    .topbar h2{
+        font-weight:700;
+        font-size:38px;
+    }
+
+    /* HERO */
+
+    .hero-section{
+        background:linear-gradient(to right,#4f46e5,#7c3aed);
+        border-radius:30px;
+        padding:45px;
+        color:white;
+        position:relative;
+        overflow:hidden;
+        margin-bottom:35px;
+    }
+
+    .hero-section::before{
+        content:'';
+        position:absolute;
+        width:260px;
+        height:260px;
+        border-radius:50%;
+        background:rgba(255,255,255,0.08);
+        top:-80px;
+        right:-60px;
+    }
+
+    .hero-title{
+        font-size:42px;
+        font-weight:700;
+        margin-bottom:10px;
+    }
+
+    .hero-subtitle{
+        font-size:18px;
+        opacity:0.9;
+    }
+
+    /* STATS */
+
+    .stats-card{
+        background:white;
+        border-radius:28px;
+        padding:30px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+        transition:0.3s;
+        height:100%;
+    }
+
+    .stats-card:hover{
+        transform:translateY(-6px);
+    }
+
+    .stats-title{
+        color:#6b7280;
+        margin-bottom:10px;
+        font-size:16px;
+    }
+
+    .stats-number{
+        font-size:42px;
+        font-weight:700;
+    }
+
+    /* QUICK ACTIONS */
+
+    .actions-section{
+        background:white;
+        border-radius:30px;
+        padding:35px;
+        margin-top:35px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .section-title{
+        font-size:30px;
+        font-weight:700;
+        margin-bottom:30px;
+    }
+
+    .action-btn{
+        display:block;
+        text-decoration:none;
+        padding:18px;
+        border-radius:18px;
+        color:white;
+        font-weight:600;
+        margin-bottom:20px;
+        transition:0.3s;
+    }
+
+    .action-btn:hover{
+        transform:translateY(-4px);
+        color:white;
+    }
+
+    .btn-course{
+        background:linear-gradient(to right,#2563eb,#4f46e5);
+    }
+
+    .btn-assignment{
+        background:linear-gradient(to right,#7c3aed,#9333ea);
+    }
+
+    .btn-submission{
+        background:linear-gradient(to right,#059669,#10b981);
+    }
+
+    .btn-attendance{
+        background:linear-gradient(to right,#ea580c,#f97316);
+    }
+
+    .btn-quiz{
+        background:linear-gradient(to right,#db2777,#ec4899);
+    }
+
+    .btn-analytics{
+        background:linear-gradient(to right,#0891b2,#06b6d4);
+    }
+
+    /* RECENT SUBMISSIONS */
+
+    .submission-section{
+        background:white;
+        border-radius:30px;
+        padding:35px;
+        margin-top:35px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .submission-card{
+        background:#f8fafc;
+        border-radius:20px;
+        padding:22px;
+        margin-bottom:18px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .student-name{
+        font-size:18px;
+        font-weight:600;
+    }
+
+    .submission-status{
+        background:#dcfce7;
+        color:#166534;
+        padding:8px 18px;
+        border-radius:50px;
+        font-size:14px;
+        font-weight:600;
+    }
+
+    .submission-time{
+        color:#6b7280;
+        margin-top:5px;
+        font-size:14px;
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        IntelliLMS
+
+    </div>
+
+    <div class="menu">
+
+        <a href="/teacher">
+            Dashboard
+        </a>
+
+        <a href="/teacher/courses">
+            Course Management
+        </a>
+
+        <a href="/teacher/assignments">
+            Assignment Management
+        </a>
+
+        <a href="/teacher/submissions">
+            Student Submissions
+        </a>
+
+        <a href="/teacher/attendance">
+            Attendance
+        </a>
+
+        <a href="/quiz_management">
+            Quiz Management
+        </a>
+        <a href="/teacher/quiz-results">
+            Quiz Results
+        </a>
+        <a href="/teacher/analytics">
+            Analytics
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>
+
+                Teacher Dashboard 👩‍🏫
+
+            </h2>
+
+            <p class="text-secondary">
+
+                Welcome back, {{ user }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero-section">
+
+        <div class="hero-title">
+
+            Manage Smart Learning Easily 🚀
+
+        </div>
+
+        <div class="hero-subtitle">
+
+            Control courses, assignments, submissions,
+            attendance, quizzes, and student performance
+            all in one place.
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Total Courses
+
+                </div>
+
+                <div class="stats-number text-primary">
+
+                    {{ total_courses }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Assignments
+
+                </div>
+
+                <div class="stats-number text-success">
+
+                    {{ total_assignments }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Students
+
+                </div>
+
+                <div class="stats-number text-warning">
+
+                    {{ total_students }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Submissions
+
+                </div>
+
+                <div class="stats-number text-danger">
+
+                    {{ total_submissions }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="actions-section">
+
+        <div class="section-title">
+
+            Quick Management Actions
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-4">
+
+                <a href="/teacher/courses"
+                   class="action-btn btn-course">
+
+                    Manage Courses
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="/teacher/assignments"
+                   class="action-btn btn-assignment">
+
+                    Manage Assignments
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="/teacher/submissions"
+                   class="action-btn btn-submission">
+
+                    Review Submissions
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="/teacher/attendance"
+                   class="action-btn btn-attendance">
+
+                    Mark Attendance
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="/quiz_management"
+                   class="action-btn btn-quiz">
+
+                    Create Quizzes
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="/teacher/analytics"
+                   class="action-btn btn-analytics">
+
+                    View Analytics
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT SUBMISSIONS -->
+
+    <div class="submission-section">
+
+        <div class="section-title">
+
+            Recent Student Submissions
+
+        </div>
+
+        {% for submission in recent_submissions %}
+
+        <div class="submission-card">
+
+            <div>
+
+                <div class="student-name">
+
+                    {{ submission['student_name'] }}
+
+                </div>
+
+                <div class="submission-time">
+
+                    Submitted on:
+                    {{ submission['submitted_at'] }}
+
+                </div>
+
+            </div>
+
+            <div class="submission-status">
+
+                {{ submission['status'] }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

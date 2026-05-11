@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Submissions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8fafc;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+        width:270px;
+        height:100vh;
+        position:fixed;
+        background:#111827;
+        padding:30px 20px;
+        color:white;
+    }
+
+    .logo{
+        font-size:30px;
+        font-weight:800;
+        color:#8b5cf6;
+        margin-bottom:50px;
+    }
+
+    .menu a{
+        display:block;
+        color:#d1d5db;
+        text-decoration:none;
+        padding:14px 18px;
+        border-radius:14px;
+        margin-bottom:12px;
+        transition:0.3s;
+        font-weight:500;
+    }
+
+    .menu a:hover{
+        background:#8b5cf6;
+        color:white;
+    }
+
+    /* MAIN */
+
+    .main-content{
+        margin-left:270px;
+        padding:40px;
+    }
+
+    .topbar{
+        margin-bottom:35px;
+    }
+
+    .topbar h2{
+        font-size:38px;
+        font-weight:700;
+    }
+
+    /* SUBMISSION CARD */
+
+    .submission-card{
+        background:white;
+        border-radius:28px;
+        padding:30px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom:30px;
+    }
+
+    .assignment-title{
+        font-size:28px;
+        font-weight:700;
+        margin-bottom:10px;
+    }
+
+    .subject-badge{
+        display:inline-block;
+        background:#ede9fe;
+        color:#6d28d9;
+        padding:8px 16px;
+        border-radius:50px;
+        font-size:14px;
+        font-weight:600;
+        margin-bottom:20px;
+    }
+
+    .info{
+        margin-bottom:10px;
+        color:#4b5563;
+    }
+
+    .status{
+        display:inline-block;
+        padding:8px 16px;
+        border-radius:50px;
+        font-size:14px;
+        font-weight:600;
+        margin-top:15px;
+    }
+
+    .submitted{
+        background:#fef3c7;
+        color:#92400e;
+    }
+
+    .graded{
+        background:#dcfce7;
+        color:#166534;
+    }
+
+    .download-btn{
+        display:inline-block;
+        margin-top:20px;
+        text-decoration:none;
+        background:linear-gradient(to right,#2563eb,#4f46e5);
+        color:white;
+        padding:12px 24px;
+        border-radius:14px;
+        font-weight:600;
+    }
+
+    /* GRADE FORM */
+
+    .grade-form{
+        margin-top:30px;
+        border-top:1px solid #e5e7eb;
+        padding-top:25px;
+    }
+
+    .form-control{
+        height:52px;
+        border:none;
+        border-radius:16px;
+        background:#f1f5f9;
+        margin-bottom:18px;
+        padding-left:18px;
+    }
+
+    textarea.form-control{
+        height:120px;
+        padding-top:15px;
+    }
+
+    .form-control:focus{
+        box-shadow:none;
+        border:2px solid #8b5cf6;
+        background:white;
+    }
+
+    .submit-btn{
+        width:100%;
+        height:52px;
+        border:none;
+        border-radius:16px;
+        background:linear-gradient(to right,#4f46e5,#7c3aed);
+        color:white;
+        font-weight:600;
+        transition:0.3s;
+    }
+
+    .submit-btn:hover{
+        transform:translateY(-3px);
+    }
+
+    .feedback-box{
+        margin-top:20px;
+        background:#f9fafb;
+        border-radius:18px;
+        padding:20px;
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        IntelliLMS
+
+    </div>
+
+    <div class="menu">
+
+        <a href="/teacher">
+            Dashboard
+        </a>
+
+        <a href="/teacher/courses">
+            Course Management
+        </a>
+
+        <a href="/teacher/assignments">
+            Assignment Management
+        </a>
+
+        <a href="/teacher/submissions">
+            Student Submissions
+        </a>
+
+        <a href="/teacher/attendance">
+            Attendance
+        </a>
+
+        <a href="/quiz_management">
+            Quiz Management
+        </a>
+
+        <a href="/teacher/analytics">
+            Analytics
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main-content">
+
+    <div class="topbar">
+
+        <h2>
+
+            Student Submissions 📂
+
+        </h2>
+
+        <p class="text-secondary">
+
+            Review, grade, and provide feedback to students.
+
+        </p>
+
+    </div>
+
+    {% for submission in submissions %}
+
+    <div class="submission-card">
+
+        <div class="assignment-title">
+
+            {{ submission['title'] }}
+
+        </div>
+
+        <div class="subject-badge">
+
+            {{ submission['subject'] }}
+
+        </div>
+
+        <div class="info">
+
+            <strong>Student:</strong>
+            {{ submission['student_name'] }}
+
+        </div>
+
+        <div class="info">
+
+            <strong>Submitted At:</strong>
+            {{ submission['submitted_at'] }}
+
+        </div>
+
+        <div class="info">
+
+            <strong>Total Marks:</strong>
+            {{ submission['total_marks'] }}
+
+        </div>
+
+        <div class="status
+            {% if submission['status'] == 'Graded' %}
+                graded
+            {% else %}
+                submitted
+            {% endif %}
+        ">
+
+            {{ submission['status'] }}
+
+        </div>
+
+        <br>
+
+        <a href="/{{ submission['file_path'] }}"
+           target="_blank"
+           class="download-btn">
+
+            View Submission
+
+        </a>
+
+        <!-- GRADE FORM -->
+
+        <div class="grade-form">
+
+            <form action="/grade_submission/{{ submission['id'] }}"
+                  method="POST">
+
+                <input type="number"
+                       name="grade"
+                       class="form-control"
+                       placeholder="Enter Grade"
+                       required>
+
+                <textarea name="feedback"
+                          class="form-control"
+                          placeholder="Write feedback for student..."
+                          required></textarea>
+
+                <button type="submit"
+                        class="submit-btn">
+
+                    Submit Grade & Feedback
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- SHOW FEEDBACK -->
+
+        {% if submission['feedback'] %}
+
+        <div class="feedback-box">
+
+            <h5 class="mb-3">
+
+                Teacher Feedback
+
+            </h5>
+
+            <p>
+
+                {{ submission['feedback'] }}
+
+            </p>
+
+            <strong>
+
+                Grade:
+                {{ submission['grade'] }}
+
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Attendance</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8fafc;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+        width:260px;
+        height:100vh;
+        position:fixed;
+        background:#111827;
+        padding:30px 20px;
+        color:white;
+    }
+
+    .logo{
+        font-size:30px;
+        font-weight:800;
+        color:#8b5cf6;
+        margin-bottom:50px;
+    }
+
+    .menu a{
+        display:block;
+        color:#d1d5db;
+        text-decoration:none;
+        padding:14px 18px;
+        border-radius:14px;
+        margin-bottom:10px;
+        transition:0.3s;
+        font-weight:500;
+    }
+
+    .menu a:hover{
+        background:#8b5cf6;
+        color:white;
+    }
+
+    /* MAIN */
+
+    .main-content{
+        margin-left:260px;
+        padding:40px;
+    }
+
+    .topbar{
+        margin-bottom:35px;
+    }
+
+    .topbar h2{
+        font-weight:700;
+        font-size:36px;
+    }
+
+    /* STATS */
+
+    .stats-card{
+        background:white;
+        border-radius:24px;
+        padding:28px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.05);
+        transition:0.3s;
+    }
+
+    .stats-card:hover{
+        transform:translateY(-5px);
+    }
+
+    .stats-title{
+        color:#6b7280;
+        font-size:15px;
+        margin-bottom:10px;
+    }
+
+    .stats-number{
+        font-size:36px;
+        font-weight:700;
+    }
+
+    /* TABLE */
+
+    .attendance-table{
+        background:white;
+        border-radius:25px;
+        padding:30px;
+        margin-top:35px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .table{
+        margin-top:20px;
+    }
+
+    .badge-present{
+        background:#dcfce7;
+        color:#166534;
+        padding:8px 14px;
+        border-radius:30px;
+        font-weight:600;
+    }
+
+    .badge-absent{
+        background:#fee2e2;
+        color:#991b1b;
+        padding:8px 14px;
+        border-radius:30px;
+        font-weight:600;
+    }
+
+    .badge-late{
+        background:#fef3c7;
+        color:#92400e;
+        padding:8px 14px;
+        border-radius:30px;
+        font-weight:600;
+    }
+
+    .percentage-circle{
+        width:180px;
+        height:180px;
+        border-radius:50%;
+        background:conic-gradient(
+            #4f46e5 calc({{ attendance_percentage }} * 1%),
+            #e5e7eb 0
+        );
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin:auto;
+    }
+
+    .circle-inner{
+        width:135px;
+        height:135px;
+        background:white;
+        border-radius:50%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+    }
+
+    .circle-inner h2{
+        font-size:32px;
+        font-weight:700;
+        margin:0;
+    }
+
+    .circle-inner p{
+        color:#6b7280;
+        margin:0;
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        IntelliLMS
+
+    </div>
+
+    <div class="menu">
+
+    <a href="/student">Dashboard</a>
+    <a href="/student/courses">Courses</a>
+    <a href="/student/assignments">Assignments</a>
+    <a href="/student/quizzes">Quizzes</a>
+    <a href="/student/attendance">Attendance</a>
+    <a href="/student/analytics">Analytics</a>
+    <a href="/student/recommendations">AI Recommendations</a>
+    <a href="/student/ai-chatbot">IntelliAI Chatbot</a>
+    <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h2>
+
+            Attendance Overview 📅
+
+        </h2>
+
+        <p class="text-secondary">
+
+            Track your attendance performance and class participation.
+
+        </p>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Total Classes
+
+                </div>
+
+                <div class="stats-number">
+
+                    {{ total_classes }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Present
+
+                </div>
+
+                <div class="stats-number text-success">
+
+                    {{ present_count }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Absent
+
+                </div>
+
+                <div class="stats-number text-danger">
+
+                    {{ absent_count }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stats-card">
+
+                <div class="stats-title">
+
+                    Late
+
+                </div>
+
+                <div class="stats-number text-warning">
+
+                    {{ late_count }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ATTENDANCE PERCENTAGE -->
+
+    <div class="attendance-table text-center">
+
+        <h3 class="fw-bold mb-4">
+
+            Attendance Percentage
+
+        </h3>
+
+        <div class="percentage-circle">
+
+            <div class="circle-inner">
+
+                <h2>
+
+                    {{ attendance_percentage }}%
+
+                </h2>
+
+                <p>
+
+                    Attendance
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="attendance-table">
+
+        <h3 class="fw-bold">
+
+            Attendance Records
+
+        </h3>
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>
+
+                        {{ record['attendance_date'] }}
+
+                    </td>
+
+                    <td>
+
+                        {% if record['status'] == 'Present' %}
+
+                            <span class="badge-present">
+
+                                Present
+
+                            </span>
+
+                        {% elif record['status'] == 'Absent' %}
+
+                            <span class="badge-absent">
+
+                                Absent
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge-late">
+
+                                Late
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

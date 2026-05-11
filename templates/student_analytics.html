@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Analytics</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:'Poppins',sans-serif;
+        background:#f8fafc;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+        width:260px;
+        height:100vh;
+        position:fixed;
+        background:#111827;
+        padding:30px 20px;
+        color:white;
+    }
+
+    .logo{
+        font-size:30px;
+        font-weight:800;
+        color:#8b5cf6;
+        margin-bottom:50px;
+    }
+
+    .menu a{
+        display:block;
+        color:#d1d5db;
+        text-decoration:none;
+        padding:14px 18px;
+        border-radius:14px;
+        margin-bottom:10px;
+        transition:0.3s;
+        font-weight:500;
+    }
+
+    .menu a:hover{
+        background:#8b5cf6;
+        color:white;
+    }
+
+    /* MAIN */
+
+    .main-content{
+        margin-left:260px;
+        padding:40px;
+    }
+
+    .topbar{
+        margin-bottom:35px;
+    }
+
+    .topbar h2{
+        font-size:38px;
+        font-weight:700;
+    }
+
+    /* CARDS */
+
+    .analytics-card{
+        background:white;
+        border-radius:28px;
+        padding:30px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+        transition:0.3s;
+        height:100%;
+    }
+
+    .analytics-card:hover{
+        transform:translateY(-6px);
+    }
+
+    .card-title{
+        color:#6b7280;
+        margin-bottom:12px;
+        font-size:15px;
+    }
+
+    .card-number{
+        font-size:40px;
+        font-weight:700;
+    }
+
+    /* STATUS BOX */
+
+    .status-box{
+        background:linear-gradient(to right,#4f46e5,#7c3aed);
+        color:white;
+        border-radius:28px;
+        padding:35px;
+        margin-top:35px;
+    }
+
+    .status-box h3{
+        font-size:30px;
+        font-weight:700;
+        margin-bottom:12px;
+    }
+
+    /* CHART */
+
+    .chart-card{
+        background:white;
+        border-radius:28px;
+        padding:35px;
+        margin-top:35px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    /* PROGRESS */
+
+    .progress{
+        height:14px;
+        border-radius:30px;
+        margin-top:15px;
+    }
+
+    .attendance-box{
+        margin-top:25px;
+    }
+
+    .attendance-label{
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:10px;
+        font-weight:600;
+    }
+
+    /* AI INSIGHT */
+
+    .insight-box{
+        background:white;
+        border-radius:28px;
+        padding:35px;
+        margin-top:35px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .insight-title{
+        font-size:28px;
+        font-weight:700;
+        margin-bottom:20px;
+    }
+
+    .insight-text{
+        color:#6b7280;
+        line-height:1.8;
+        font-size:16px;
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        IntelliLMS
+
+    </div>
+
+    <div class="menu">
+
+    <a href="/student">Dashboard</a>
+    <a href="/student/courses">Courses</a>
+    <a href="/student/assignments">Assignments</a>
+    <a href="/student/quizzes">Quizzes</a>
+    <a href="/student/attendance">Attendance</a>
+    <a href="/student/analytics">Analytics</a>
+    <a href="/student/recommendations">AI Recommendations</a>
+    <a href="/student/ai-chatbot">IntelliAI Chatbot</a>
+    <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h2>
+
+            Performance Analytics 📊
+
+        </h2>
+
+        <p class="text-secondary">
+
+            Analyze your academic growth and performance insights.
+
+        </p>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+
+            <div class="analytics-card">
+
+                <div class="card-title">
+
+                    Total Submissions
+
+                </div>
+
+                <div class="card-number">
+
+                    {{ total_submissions }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="analytics-card">
+
+                <div class="card-title">
+
+                    Graded Assignments
+
+                </div>
+
+                <div class="card-number text-primary">
+
+                    {{ graded_submissions }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="analytics-card">
+
+                <div class="card-title">
+
+                    Average Grade
+
+                </div>
+
+                <div class="card-number text-success">
+
+                    {{ average_grade }}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PERFORMANCE STATUS -->
+
+    <div class="status-box">
+
+        <h3>
+
+            {{ performance_status }}
+
+        </h3>
+
+        <p>
+
+            Your academic performance is being continuously analyzed
+            using LMS analytics and AI recommendations.
+
+        </p>
+
+        <!-- ATTENDANCE -->
+
+        <div class="attendance-box">
+
+            <div class="attendance-label">
+
+                <span>Attendance Percentage</span>
+
+                <span>{{ attendance_percentage }}%</span>
+
+            </div>
+
+            <div class="progress">
+
+                <div class="progress-bar bg-light"
+                     style="width: {{ attendance_percentage }}%">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+
+    <div class="chart-card">
+
+        <h3 class="fw-bold mb-4">
+
+            Grade Performance Chart
+
+        </h3>
+
+        <canvas id="performanceChart"></canvas>
+
+    </div>
+
+    <!-- AI INSIGHT -->
+
+    <div class="insight-box">
+
+        <div class="insight-title">
+
+            AI Performance Insight 🤖
+
+        </div>
+
+        <div class="insight-text">
+
+            {% if average_grade < 40 %}
+
+                Your performance needs improvement.
+                Focus more on assignments, practice quizzes,
+                and course revision regularly.
+
+            {% elif average_grade < 75 %}
+
+                You are performing well.
+                Maintain consistency and improve assignment quality
+                for higher academic performance.
+
+            {% else %}
+
+                Excellent performance!
+                You are among the top-performing students.
+                Continue advanced learning and practical projects.
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('performanceChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: [
+
+            {% for mark in marks_list %}
+                'Assignment {{ loop.index }}',
+            {% endfor %}
+
+        ],
+
+        datasets: [{
+
+            label: 'Grades',
+
+            data: [
+
+                {% for mark in marks_list %}
+                    {{ mark }},
+                {% endfor %}
+
+            ],
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: true
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+                max: 100
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

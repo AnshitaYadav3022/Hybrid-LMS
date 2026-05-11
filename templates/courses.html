@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Course Management</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f8fafc;
+}
+
+/* MAIN CONTAINER */
+
+.main-container{
+    padding:50px;
+}
+
+/* CARD */
+
+.main-card{
+    background:white;
+    border-radius:30px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom:40px;
+}
+
+.page-title{
+    font-size:40px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#6b7280;
+    margin-bottom:35px;
+}
+
+/* FORM */
+
+.form-control{
+    height:55px;
+    border-radius:16px;
+    border:none;
+    background:#f1f5f9;
+    margin-bottom:20px;
+    padding-left:18px;
+}
+
+textarea.form-control{
+    height:130px;
+    padding-top:15px;
+}
+
+.form-control:focus{
+    box-shadow:none;
+    border:2px solid #8b5cf6;
+    background:white;
+}
+
+.submit-btn{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(to right,#4f46e5,#7c3aed);
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* COURSE CARD */
+
+.course-card{
+    background:white;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    transition:0.3s;
+    height:100%;
+}
+
+.course-card:hover{
+    transform:translateY(-6px);
+}
+
+.course-image{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.course-body{
+    padding:28px;
+}
+
+.course-title{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.course-description{
+    color:#6b7280;
+    margin-bottom:20px;
+    line-height:1.7;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.manage-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:14px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    min-width:120px;
+}
+
+.action-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:14px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.edit-btn{
+    background:linear-gradient(to right,#2563eb,#4f46e5);
+}
+
+.content-btn{
+    background:linear-gradient(to right,#7c3aed,#8b5cf6);
+}
+
+.delete-btn{
+    background:linear-gradient(to right,#dc2626,#ef4444);
+}
+
+.action-btn:hover{
+    transform:translateY(-3px);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+    <!-- ADD COURSE -->
+
+    <div class="main-card">
+
+        <div class="page-title">
+
+            Course Management 📚
+
+        </div>
+
+        <div class="subtitle">
+
+            Create and manage smart learning courses.
+
+        </div>
+
+        <form method="POST">
+
+            <input type="text"
+                   name="course_name"
+                   class="form-control"
+                   placeholder="Course Name"
+                   required>
+
+            <textarea name="description"
+                      class="form-control"
+                      placeholder="Course Description"
+                      required></textarea>
+
+            <input type="text"
+                   name="image_url"
+                   class="form-control"
+                   placeholder="Course Image URL">
+
+            <button type="submit"
+                    class="submit-btn">
+
+                Add Course
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- COURSE LIST -->
+
+    <div class="row g-4">
+
+        {% for course in courses %}
+
+        <div class="col-lg-4">
+
+            <div class="course-card">
+
+                {% if course.image_url %}
+
+                <img src="{{ course.image_url }}"
+                     class="course-image">
+
+                {% endif %}
+
+                <div class="course-body">
+
+                    <div class="course-title">
+
+                        {{ course.course_name }}
+
+                    </div>
+
+                    <div class="course-description">
+
+                        {{ course.description }}
+
+                    </div>
+
+<div class="action-buttons">
+
+    <a href="/edit_course/{{ course['id'] }}"
+       class="action-btn edit-btn">
+
+        Edit
+
+    </a>
+
+    <a href="/teacher/course-content/{{ course['id'] }}"
+       class="action-btn content-btn">
+
+        Manage Content
+
+    </a>
+
+    <a href="/delete_course/{{ course['id'] }}"
+       class="action-btn delete-btn">
+
+        Delete
+
+    </a>
+
+</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
